@@ -6,9 +6,12 @@ from django.views.generic import ListView, DetailView
 class PostList(ListView):
     model = Post
     ordering = '-pk'
-    #템블릿은 모델명_list.html 이 자동  생성
+    # 템플릿은 모델명_list.html 이 자동  생성
+    # 매개변수 모델명_list : post_list
 class PostDetail(DetailView):
     model = Post
+    # 템플릿은 모델명_detail.html 이 자동  생성
+    # 매개변수 모델명 : post
 
 #def index(request):
 #    posts = Post.objects.all().order_by('-pk')
