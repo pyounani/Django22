@@ -1,9 +1,11 @@
 from django.db import models
+import os
 
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=30)
-    content = models.TextField()
+    hook_text = models.CharField(max_length=100, blank=True)
+    content = models.TextField()  #글자 수 제한이 없음
 
     head_image = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)
     #Y 2022, #y 22
@@ -19,3 +21,9 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return f'/blog/{self.pk}/'
+
+    def get_file_name(self):
+        return os.path.basename(self.file_upload.name)
+
+    def get_file_ext(self):
+        return self.get_file_name().split('.')[-1] # a.text 실행하면 a 하나 text 하나 따로 나온다. 확장에 해당되는 것은 마지막 text이다.
