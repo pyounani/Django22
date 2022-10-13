@@ -141,8 +141,9 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-8 col-lg-9">
+        <div class="col-md-8 col-lg-9" id="main-area">
 
+          {% if post_list.exists %}
           {% for p in post_list %}
           <div class="card mb-4">
             {% if p.head_image %}
@@ -174,6 +175,9 @@
             </div>
           </div>
           {% endfor %}
+          {% else %}
+          <h5>아직 게시물이 없습니다</h5>
+          {% endif %}
 
           <!-- Pagination-->
           <nav aria-label="Pagination">
