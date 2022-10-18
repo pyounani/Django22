@@ -15,7 +15,7 @@ class TestView(TestCase):
 
         soup = BeautifulSoup(response.content, 'html.parser')
         # title이 정상적으로 보이는지
-        self.assertEqual(soup.title.text, 'BLOG')
+        self.assertEqual(soup.title.text, ' BLOG ')
 
         # navbar가 정상적으로 보이는지
         navbar = soup.nav
