@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.PostList.as_view()),
-    path('<int:pk>/', views.PostDetail.as_view())
+    path('<int:pk>/', views.PostDetail.as_view()),
+    path('category/<str:slug>/', views.category_page),
 
     #FBV
     #path('', views.index),

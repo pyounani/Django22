@@ -1,8 +1,23 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User  # User는 장고엣 제공해주는 것이기 때문에
 import os
 
 # Create your models here.
+# python manange.py startapp blog  => settings가서 추가하기
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)  # URL를 만들 떄 이용
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f'/blog/category/{self.slug}/'
+        # 블로그 디테일은 pk를 썼는데 카테고리는 slug 이용
+
+    class Meta:
+        verbose_name_plural = 'Catogories'
+
 class Post(models.Model):
     title = models.CharField(max_length=30)
     hook_text = models.CharField(max_length=100, blank=True)
@@ -15,9 +30,11 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    #author 추후 작성
-    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    # author 추후 작성
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)  # SET_NULL 은 User가 지워져도 게시물은 남기겠다
     # author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'[{self.pk}]{self.title}::{self.author} : {self.created_at}'
