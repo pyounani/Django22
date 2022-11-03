@@ -3,7 +3,17 @@ from django.contrib.auth.models import User  # User는 장고엣 제공해주는
 import os
 
 # Create your models here.
-# python manange.py startapp blog  => settings가서 추가하기
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f'/blog/tag/{self.slug}'
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)  # URL를 만들 떄 이용
@@ -21,7 +31,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=30)
     hook_text = models.CharField(max_length=100, blank=True)
-    content = models.TextField()  #글자 수 제한이 없음
+    content = models.TextField()
 
     head_image = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)
     #Y 2022, #y 22
@@ -35,6 +45,8 @@ class Post(models.Model):
     # author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return f'[{self.pk}]{self.title}::{self.author} : {self.created_at}'
