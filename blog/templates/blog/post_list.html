@@ -4,8 +4,8 @@
 
         {% if user.is_authenticated %}
             {% if user.is_superuser or user.is_staff %}
-                <a calss="btn-info float-right" href="/blog/create_post/" role="button">
-                    NewPost
+                <a class="btn btn-info float-right" href="/blog/create_post/" role="button">
+                    <i class="fas fa-pen">NewPost</i>
                 </a>
             {% endif %}
         {% endif %}
