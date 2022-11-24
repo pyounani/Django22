@@ -7,6 +7,8 @@ from django.utils.text import slugify
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404
 
+from django.db.models import Q
+
 # Create your views here.
 class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
@@ -84,6 +86,9 @@ class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         context['no_category_post_count'] = Post.objects.filter(category=None).count
         return context
 
+
+
+
 class PostList(ListView):
     model = Post
     ordering = '-pk'
@@ -96,6 +101,21 @@ class PostList(ListView):
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Post.objects.filter(category=None).count
         return context
+
+class PostSearch(PostList):
+    paginate_by = None
+
+    def get_queryset(self):
+        q = self.kwargs['q']
+        post_list = Post.objects.filter(Q(title__contains=q) | Q(tags__name__contains=q)).distinct()
+        return post_list
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PostSearch, self).get_context_data()
+        q = self.kwargs['q']
+        context['search_info'] = f'Search: {q} ({self.get_queryset().count()})'
+        return context
+
 class PostDetail(DetailView):
     model = Post
 

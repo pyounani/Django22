@@ -10,6 +10,7 @@ urlpatterns = [
     path('create_post/', views.PostCreate.as_view()),
     path('category/<str:slug>/', views.category_page),  #IP주소/blog/category/slug/
     path('tag/<str:slug>/', views.tag_page),
+    path('search/<str:q>/', views.PostSearch.as_view()),
 
     #FBV
     #path('', views.index),
